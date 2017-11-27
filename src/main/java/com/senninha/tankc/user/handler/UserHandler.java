@@ -6,10 +6,12 @@ import org.slf4j.Marker;
 
 import com.senninha.tankc.user.message.ResLoginMessage;
 
+import cn.senninha.sserver.client.ClientSession;
 import cn.senninha.sserver.lang.dispatch.MessageHandler;
 import cn.senninha.sserver.lang.dispatch.MessageInvoke;
 import cn.senninha.sserver.lang.message.BaseMessage;
 import cn.senninha.sserver.message.CmdConstant;
+import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolHandler.ClientHandshakeStateEvent;
 
 @MessageHandler
 public class UserHandler {
@@ -29,5 +31,6 @@ public class UserHandler {
 	@MessageInvoke(cmd = CmdConstant.HEART_RES)
 	public void heartbeat(int sessionId, BaseMessage message) {
 		logger.error("收到心跳回复：{}", message.toString());
+		ClientSession.getInstance().setLastSendHeartbeat(0);
 	}
 }

@@ -1,3 +1,4 @@
+package cn.senninha.sserver;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
 public class ClientStart {
+	public static ClientStart start;
+	private Bootstrap bootstrap;
 	private final String host;
 	private final int port;
 	private final int maxFrameLength; // 最大长度
@@ -45,14 +48,14 @@ public class ClientStart {
 
 	public void connect() throws Exception {
 		init(); // 初始化编解码工具
-		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		EventLoopGroup workerGroup = new NioEventLoopGroup(1);
 
 		try {
-			Bootstrap b = new Bootstrap();
-			b.group(workerGroup);
-			b.channel(NioSocketChannel.class);
-			b.option(ChannelOption.SO_KEEPALIVE, true);
-			b.handler(new ChannelInitializer<SocketChannel>() {
+			bootstrap = new Bootstrap();
+			bootstrap.group(workerGroup);
+			bootstrap.channel(NioSocketChannel.class);
+			bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast(new EncodeHandler());
@@ -65,14 +68,14 @@ public class ClientStart {
 
 			// Start the client.
 
-			doConnect(b, host, port);
+			doConnect();
 			// Wait until the connection is closed.
 		}catch (Exception e) {
 			logger.error(e.toString());
 		}
 	}
 
-	private void doConnect(Bootstrap bootstrap, String host, int port) {
+	private void doConnect() {
 		ChannelFuture future = null;
 		future = bootstrap.connect(host, port);
 
@@ -89,7 +92,7 @@ public class ClientStart {
 							.schedule(new Runnable() {
 								@Override
 								public void run() {
-									doConnect(bootstrap, host, port);
+									doConnect();
 								}
 							}, 10, TimeUnit.SECONDS);
 				}
@@ -107,6 +110,7 @@ public class ClientStart {
 	public static void main(String[] args) throws Exception {
 		ClientStart client = new ClientStart("localhost", 9527, 1024, 1, 2, 0,
 				3, true);
+		start = client;
 		client.connect();
 	}
 }

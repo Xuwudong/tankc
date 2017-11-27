@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.senninha.tankc.user.message.ReqHeartbeatMessge;
 import com.senninha.tankc.user.message.ReqLoginMessage;
 
+import cn.senninha.sserver.ClientStart;
 import cn.senninha.sserver.client.ClientSession;
 import cn.senninha.sserver.lang.ByteBufUtil;
 import cn.senninha.sserver.lang.codec.CodecFactory;
@@ -25,6 +26,7 @@ import io.netty.util.AttributeKey;
  */
 public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 	private Logger logger = LoggerFactory.getLogger(DispatchHandler.class);
+	private static long timeWait = 1000 * 30;			//超时重连时间
 
 	public DispatchHandler(int maxFrameLength, int lengthFieldOffset,
 			int lengthFieldLength, int lengthAdjustment,
@@ -89,7 +91,28 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 	}
 	
 	private void handleAllIdle(ChannelHandlerContext ctx){
-		ctx.writeAndFlush(new ReqHeartbeatMessge());
-		logger.error("心跳信息");
+		ClientSession client = ClientSession.getInstance();
+		if(client.getLastSendHeartbeat() == 0) {
+			ctx.writeAndFlush(new ReqHeartbeatMessge());
+			client.setLastSendHeartbeat(System.currentTimeMillis());
+		}
+		
+		if(System.currentTimeMillis() - client.getLastSendHeartbeat() > timeWait) {
+			ctx.disconnect();
+			client.setCtx(null);
+			try {
+				ClientStart.start.connect();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			logger.error("掉线重连");
+		}
+	}
+	
+	@Override
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+		ClientSession.getInstance().setCtx(null);
+		ctx.disconnect();
+		ClientStart.start.connect();
 	}
 }

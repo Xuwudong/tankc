@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 public class ClientSession {
 	private ChannelHandlerContext ctx;
 	private static ClientSession session;
+	private long lastSendHeartbeat;  		//上一次发送心跳时间，一旦收到心跳回复，马上致0
 
 	private ClientSession() {
 
@@ -28,6 +29,14 @@ public class ClientSession {
 
 	public void pushMessage(BaseMessage message) {
 		ctx.channel().writeAndFlush(message);
+	}
+	
+	public long getLastSendHeartbeat() {
+		return lastSendHeartbeat;
+	}
+
+	public void setLastSendHeartbeat(long lastSendHeartbeat) {
+		this.lastSendHeartbeat = lastSendHeartbeat;
 	}
 
 	@Override
