@@ -108,7 +108,7 @@ public class ClientStart {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ClientStart client = new ClientStart("localhost", 9527, 1024, 1, 2, 0,
+		ClientStart client = new ClientStart("localhost", 9527, 1024 * 16, 1, 2, 0,
 				3, true);
 		start = client;
 		client.connect();
