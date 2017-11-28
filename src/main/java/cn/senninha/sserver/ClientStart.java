@@ -1,8 +1,13 @@
 package cn.senninha.sserver;
-import java.util.concurrent.TimeUnit;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.senninha.tankc.ui.GameFrame;
 
 import cn.senninha.sserver.handler.DispatchHandler;
 import cn.senninha.sserver.handler.EncodeHandler;
@@ -75,7 +80,7 @@ public class ClientStart {
 		}
 	}
 
-	private void doConnect() {
+	public void doConnect() {
 		ChannelFuture future = null;
 		future = bootstrap.connect(host, port);
 
@@ -100,11 +105,29 @@ public class ClientStart {
 		});
 	}
 
-	private void init() {
+	public void init() {
 		/** 初始化分发以及编解码工具 **/
 		CodecFactory.getInstance();
 		HandlerFactory.getInstance();
 		logger.error("初始化编解码工具成功");
+	}
+	
+	private void startUI() {
+		GameFrame gameFrame = new GameFrame();
+		gameFrame.setSize(800, 700);
+		gameFrame.setTitle("MyTankGame");
+		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gameFrame.setResizable(false);
+		gameFrame.setVisible(true);
+
+		// 显示器屏幕大小
+		Dimension screenSizeInfo = Toolkit.getDefaultToolkit().getScreenSize();
+		int leftTopX = ((int) screenSizeInfo.getWidth() - gameFrame.getWidth()) / 2;
+		int leftTopY = ((int) screenSizeInfo.getHeight() - gameFrame
+				.getHeight()) / 2;
+
+		// 设置显示的位置在屏幕中间
+		gameFrame.setLocation(leftTopX, leftTopY);
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -112,5 +135,7 @@ public class ClientStart {
 				3, true);
 		start = client;
 		client.connect();
+		client.startUI();
+		
 	}
 }

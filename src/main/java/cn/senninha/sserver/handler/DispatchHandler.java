@@ -114,6 +114,6 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		ClientSession.getInstance().setCtx(null);
 		ctx.disconnect();
-		ClientStart.start.connect();
+		ClientStart.start.doConnect();
 	}
 }
