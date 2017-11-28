@@ -87,14 +87,14 @@ public class ClientStart {
 				} else {
 					System.out.println(
 							"Failed to connect to server, try connect after 10s");
-
-					futureListener.channel().eventLoop()
-							.schedule(new Runnable() {
-								@Override
-								public void run() {
-									doConnect();
-								}
-							}, 10, TimeUnit.SECONDS);
+//
+//					futureListener.channel().eventLoop()
+//							.schedule(new Runnable() {
+//								@Override
+//								public void run() {
+//									doConnect();
+//								}
+//							}, 10, TimeUnit.SECONDS);
 				}
 			}
 		});

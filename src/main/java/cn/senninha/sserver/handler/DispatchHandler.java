@@ -69,6 +69,7 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 		m.setSessionId(10086);
 		m.setUsername("senninha");
 		ctx.writeAndFlush(m);
+		ClientSession.getInstance().setCtx(ctx);
 	}
 
 	@Override

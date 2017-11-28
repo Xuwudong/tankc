@@ -13,7 +13,10 @@ public enum GridStatus {
 	CAN_SHOT(1),
 	
 	/**不可击穿 **/
-	CAN_NOT_SHOT(2);
+	CAN_NOT_SHOT(2),
+	
+	/** 有人在这个格子 **/
+	HAS_PLAYER(3);
 	
 	
 
