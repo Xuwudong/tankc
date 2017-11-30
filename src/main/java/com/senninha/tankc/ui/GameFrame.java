@@ -5,6 +5,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import com.senninha.tankc.ui.util.DrawUtil;
+
 /**
  * 游戏Frame
  * 
@@ -140,7 +142,29 @@ public class GameFrame extends JFrame {
 
 		// 将panel添加到Frame
 		this.add(tankGamePanel);
+//
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				while (true) {
+//					tankGamePanel.repaint();
+//					try {
+//						Thread.sleep(500);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//		}).start();
 
+	}
+	
+	/**
+	 * 重新绘制战斗场景
+	 */
+	public void repaint(){
+		tankGamePanel.repaint();
 	}
 
 }

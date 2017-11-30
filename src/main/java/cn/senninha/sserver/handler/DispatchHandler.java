@@ -1,8 +1,11 @@
 package cn.senninha.sserver.handler;
 
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.senninha.tankc.map.handler.MapHandler;
 import com.senninha.tankc.user.message.ReqHeartbeatMessge;
 import com.senninha.tankc.user.message.ReqLoginMessage;
 
@@ -10,8 +13,10 @@ import cn.senninha.sserver.ClientStart;
 import cn.senninha.sserver.client.ClientSession;
 import cn.senninha.sserver.lang.ByteBufUtil;
 import cn.senninha.sserver.lang.codec.CodecFactory;
+import cn.senninha.sserver.lang.dispatch.HandleContext;
 import cn.senninha.sserver.lang.dispatch.HandlerFactory;
 import cn.senninha.sserver.lang.message.BaseMessage;
+import cn.senninha.sserver.message.CmdConstant;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -57,7 +62,12 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 							.set(sessionId);
 
 				}
-				HandlerFactory.getInstance().dispatch(message, sessionId);
+				
+				if(message.getCmd() == CmdConstant.HEART_RES){
+					logger.error("收到心跳：{}", message);
+					return null;
+				}
+				HandleContext.getInstance().dispatch(sessionId, message);
 			}
 		}
 		return null;
@@ -93,16 +103,16 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 	
 	private void handleAllIdle(ChannelHandlerContext ctx){
 		ClientSession client = ClientSession.getInstance();
-		if(client.getLastSendHeartbeat() == 0) {
+//		if(client.getLastSendHeartbeat() == 0) {
 			ctx.writeAndFlush(new ReqHeartbeatMessge());
 			client.setLastSendHeartbeat(System.currentTimeMillis());
-		}
+//		}
 		
 		if(System.currentTimeMillis() - client.getLastSendHeartbeat() > timeWait) {
 			ctx.disconnect();
 			client.setCtx(null);
 			try {
-				ClientStart.start.connect();
+//				ClientStart.start.connect();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -114,6 +124,6 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		ClientSession.getInstance().setCtx(null);
 		ctx.disconnect();
-		ClientStart.start.doConnect();
+//		ClientStart.start.doConnect();
 	}
 }

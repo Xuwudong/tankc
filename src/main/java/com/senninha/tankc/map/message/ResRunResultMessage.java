@@ -8,7 +8,9 @@ import cn.senninha.sserver.message.CmdConstant;
 public class ResRunResultMessage extends BaseMessage{
 	private int x;
 	private int y;
+	private int direction;
 	private int sessionId;
+	
 
 	public ResRunResultMessage() {
 		super();
@@ -44,10 +46,19 @@ public class ResRunResultMessage extends BaseMessage{
 	public void setSessionId(int sessionId) {
 		this.sessionId = sessionId;
 	}
+	
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
 
 	@Override
 	public String toString() {
-		return "ResRunResultMessage [x=" + x + ", y=" + y + ", sessionId=" + sessionId + "]";
+		return "ResRunResultMessage [x=" + x + ", y=" + y + ", direction=" + direction + ", sessionId=" + sessionId
+				+ "]";
 	}
 
 }

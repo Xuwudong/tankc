@@ -1,13 +1,17 @@
 package cn.senninha.sserver;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.senninha.tankc.map.handler.MapHandler;
+import com.senninha.tankc.ui.GameData;
 import com.senninha.tankc.ui.GameFrame;
+import com.senninha.tankc.ui.util.DrawUtil;
 
 import cn.senninha.sserver.handler.DispatchHandler;
 import cn.senninha.sserver.handler.EncodeHandler;
@@ -114,11 +118,13 @@ public class ClientStart {
 	
 	private void startUI() {
 		GameFrame gameFrame = new GameFrame();
-		gameFrame.setSize(800, 700);
-		gameFrame.setTitle("MyTankGame");
+		gameFrame.setSize((int)Math.round((DrawUtil.WIDTH_GRIDS * 1.2)) * DrawUtil.PER_PXIEL, (DrawUtil.HEIGHT_GRIDS + 10)* DrawUtil.PER_PXIEL);
+		gameFrame.setTitle("senninha_tank");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
 		gameFrame.setVisible(true);
+		//设置gameFram进游戏画面
+		GameData.getInstance().setGameFrame(gameFrame);
 
 		// 显示器屏幕大小
 		Dimension screenSizeInfo = Toolkit.getDefaultToolkit().getScreenSize();
@@ -136,6 +142,5 @@ public class ClientStart {
 		start = client;
 		client.connect();
 		client.startUI();
-		
 	}
 }

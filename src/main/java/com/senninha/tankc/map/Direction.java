@@ -12,6 +12,9 @@ public enum Direction {
 	SOUTH((byte)2),
 	WEST((byte)3),
 	
+	/**不需要移动 **/
+	DONT_MOVE((byte)-1),
+	
 	/** 单次请求最大步长 **/
 	MAX_GRID_STEP((byte)2);
 	

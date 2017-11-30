@@ -28,7 +28,7 @@ public class ReqRunMessage extends BaseMessage {
 	}
 
 	/**
-	 * 步子的跨越的格子数
+	 * 其实是像素数。。。
 	 * @return
 	 */
 	public byte getGridStep() {
