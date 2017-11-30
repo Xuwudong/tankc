@@ -54,6 +54,8 @@ public class TankGameImages {
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/RTank_.gif")),
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/DTank_.gif")),
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/LTank_.gif")),
+			
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/bullet.gif")),
 			};
 	/**
 	 * 游戏开始图像

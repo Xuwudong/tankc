@@ -1,10 +1,15 @@
 package com.senninha.tankc.map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.senninha.tankc.map.message.ReqRunMessage;
+import com.senninha.tankc.map.message.ReqShellsMessage;
 import com.senninha.tankc.map.message.ResRunResultMessage;
 import com.senninha.tankc.ui.GameData;
 
 import cn.senninha.sserver.client.ClientSession;
+import cn.senninha.sserver.client.TankClient;
 
 /**
  * Map帮助类
@@ -13,6 +18,8 @@ import cn.senninha.sserver.client.ClientSession;
  *
  */
 public class MapHelper {
+	
+	private static Logger logger = LoggerFactory.getLogger(MapHelper.class);
 
 	public static final int WIDTH_GRIDS = 20; // x方向的格子数
 	public static final int HEIGHT_GRIDS = 15;
@@ -54,7 +61,7 @@ public class MapHelper {
 	}
 	
 	/**
-	 * 根据一系列信息来获取该绘制的坦克状态
+	 * 根据一系列信息来获取该绘制的坦克状态(包括那些炮弹)
 	 * @param sessionId
 	 * @param res
 	 * @param direction
@@ -70,5 +77,27 @@ public class MapHelper {
 				return gg;
 		}
 		return null;
+	}
+	
+	/**
+	 * 发送开火信息
+	 */
+	public static void pushFireMessage(){
+		boolean isFire = GameData.getInstance().isFire();
+		if(isFire){//开火
+			ReqShellsMessage req = new ReqShellsMessage();
+			int sessionId = ClientSession.getInstance().getSessionId();
+			req.setSourceSessionId(sessionId);
+			TankClient tank = GameData.getInstance().getMapObjectBySessionId(sessionId);
+			if(tank != null){
+				req.setX(tank.getX());
+				req.setY(tank.getY());
+				req.setDirection((byte)tank.getDirection());
+				ClientSession.getInstance().pushMessage(req);
+				logger.error("推送开火信息成功");
+			}else{
+				logger.error("地图中无法获取想开炮的客户端{}", sessionId);
+			}
+		}
 	}
 }

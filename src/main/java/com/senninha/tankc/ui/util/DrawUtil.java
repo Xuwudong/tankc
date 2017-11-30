@@ -33,9 +33,12 @@ public class DrawUtil {
 			return;
 		}
 		for(Grid grid : list){
-			if (grid.getStatus() != GridStatus.CAN_RUN.getStatus()) {
+			if (grid.getStatus() != GridStatus.CAN_RUN.getStatus() || grid.getStatus() != GridStatus.SHELLS.getStatus()) {
 				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL / 2,
 						grid.getY() * PER_PXIEL + PER_PXIEL / 2, PER_PXIEL, PER_PXIEL, jpanel);
+			}else if(grid.getStatus() == GridStatus.SHELLS.getStatus()){//画出子弹
+				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL / 2,
+						grid.getY() * PER_PXIEL + PER_PXIEL / 2, 4, 4, jpanel);
 			}
 		}
 	}

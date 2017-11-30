@@ -40,7 +40,10 @@ public enum GridStatus {
 	OTHER_TANK_DOWN(10),
 	
 	/**坦克，别人，向左 **/
-	OTHER_TANK_LEFT(11);
+	OTHER_TANK_LEFT(11),
+	
+	/** 炮弹 **/
+	SHELLS((byte)12);
 	
 
 	

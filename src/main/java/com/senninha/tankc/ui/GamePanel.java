@@ -46,6 +46,8 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			direction = Direction.EAST.getDirection();
 		}else if(e.getKeyCode() == KeyEvent.VK_LEFT){
 			direction = Direction.WEST.getDirection();
+		}else if(e.getKeyCode() == KeyEvent.VK_A){//开火
+			GameData.getInstance().setFire();
 		}
 		
 		GameData.getInstance().setDirection(direction);

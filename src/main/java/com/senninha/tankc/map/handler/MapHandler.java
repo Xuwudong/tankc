@@ -28,11 +28,6 @@ public class MapHandler {
 		GameData.getInstance().setMap(res.getList());
 		//更新地图
 		GameData.getInstance().updateMap();
-		
-		//测试
-		upmove();
-		
-		
 		logger.error("推送行走数据成功");
 	}
 	
@@ -47,15 +42,16 @@ public class MapHandler {
 //		move();
 	}
 	
-	/**
-	 * 向下移动，测试用
-	 */
-	private void upmove() {
-		// 尝试移动
-		ReqRunMessage req = new ReqRunMessage();
-		req.setDirection(Direction.SOUTH.getDirection());
-		req.setGridStep((byte) 10);
-
-		ClientSession.getInstance().pushMessage(req);
-	}
+	
+//	/**
+//	 * 向下移动，测试用
+//	 */
+//	private void upmove() {
+//		// 尝试移动
+//		ReqRunMessage req = new ReqRunMessage();
+//		req.setDirection(Direction.SOUTH.getDirection());
+//		req.setGridStep((byte) 10);
+//
+//		ClientSession.getInstance().pushMessage(req);
+//	}
 }

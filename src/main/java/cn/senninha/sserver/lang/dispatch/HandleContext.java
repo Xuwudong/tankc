@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.senninha.tankc.map.MapHelper;
-import com.senninha.tankc.map.handler.MapHandler;
 
 import cn.senninha.sserver.lang.message.BaseMessage;
 
@@ -30,11 +29,21 @@ public class HandleContext {
 		processor[0] = new Processor("场景线程");
 		processor[0].start();
 		
+		//移动检测
 		processor[0].addCommand(new Task(100, true, -1, TimeUnit.MILLISECONDS, new Runnable() {
 			
 			@Override
 			public void run() {
 				MapHelper.move();
+			}
+		}));
+		
+		//开火检测
+		processor[0].addCommand(new Task(50, true, -1, TimeUnit.MILLISECONDS, new Runnable() {
+			
+			@Override
+			public void run() {
+				MapHelper.pushFireMessage();
 			}
 		}));
 		
@@ -49,14 +58,6 @@ public class HandleContext {
 			}
 		}));
 
-	}
-	
-	/**
-	 * 
-	 * @param task
-	 */
-	private void addCommand(int line, Task task) {
-		processor[line].addCommand(task);
 	}
 	
 	public static HandleContext getInstance() {
@@ -101,7 +102,11 @@ class Processor extends Thread {
 				Task task = queue.take();
 				Runnable r = task.getRunnable();
 				if (r != null) {
-					r.run();
+					try{
+						r.run();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					if (task.isNeedRepeat() && task.getRepeatTime() != 1) {
 						task.correctTime(); // 修正执行时间
 						addCommand(task);

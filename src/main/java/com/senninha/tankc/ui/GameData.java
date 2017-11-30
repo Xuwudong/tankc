@@ -7,7 +7,6 @@ import java.util.Map;
 import com.senninha.tankc.map.Grid;
 import com.senninha.tankc.map.GridStatus;
 import com.senninha.tankc.map.MapHelper;
-import com.senninha.tankc.map.handler.MapHandler;
 
 import cn.senninha.sserver.client.TankClient;
 
@@ -23,8 +22,25 @@ public class GameData {
 	private GameFrame gameFrame;
 	private Map<Integer, TankClient> tankContainer;
 	private volatile byte direction;
+	private volatile boolean isFire;
 	
-	
+	/**
+	 * 获取开火，自动设置开火为false
+	 * @return
+	 */
+	public boolean isFire() {
+		boolean res = isFire;
+		isFire = false;
+		return res;
+	}
+
+	/**
+	 * 设置开火
+	 */
+	public void setFire() {
+		this.isFire = true;
+	}
+
 	private GameData(){
 		tankContainer = new HashMap<>();
 	}
@@ -41,7 +57,7 @@ public class GameData {
 	}
 	
 	/**
-	 * 更新地图,只是更新地图资源，并不刷新ui
+	 * 更新地图,只是更新地图资源，并不刷新ui,这个是当某个坦克进入地图的时候必须调用的方法！！！，或者炮弹进入的时候必须调用这个方法
 	 * @param x	坐标点
 	 * @param y	坐标点
 	 * @param status 更新的格子是什么类型的
@@ -59,8 +75,10 @@ public class GameData {
 			mapGrids.get(oldIndex).setStatus((byte)GridStatus.CAN_RUN.getStatus());
 			client.setX(x);
 			client.setY(y);
+			client.setDirection(direction);
 		}else{//否则，把这个坦克加入场景
 			client = new TankClient(x, y, direction, sessionId);
+			client.setDirection(direction);
 			tankContainer.put(sessionId, client);
 		}
 		mapGrids.get(gridIndex).setStatus((byte)status.getStatus());
@@ -117,6 +135,15 @@ public class GameData {
 	public Map<Integer, TankClient> getTankContainer() {
 		return tankContainer;
 	}
+	
+	/**
+	 * 根据session获取地图中的某个物体，如果是子弹的话，就是这个子弹唯一的标识id
+	 * @param sessionId
+	 * @return
+	 */
+	public TankClient getMapObjectBySessionId(int sessionId){
+		return this.tankContainer.get(sessionId);
+	}
 
 	public void setTankContainer(Map<Integer, TankClient> tankContainer) {
 		this.tankContainer = tankContainer;
@@ -124,6 +151,7 @@ public class GameData {
 
 	/**
 	 * 当前坦克的移动方向，这个方法是给推送移动消息给客户端的时候获取的移动方向的，如果当前不需要移动，返回-1
+	 * 只是用来判断当前是否需要推送移动信息给服务端的，不是用来判断当前坦克朝向,判断当前坦克朝向的在 {@linkplain TankClient}
 	 * @return
 	 */
 	public byte getDirection() {
