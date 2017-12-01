@@ -7,6 +7,7 @@ import com.senninha.tankc.map.Direction;
 import com.senninha.tankc.map.GridStatus;
 import com.senninha.tankc.map.MapHelper;
 import com.senninha.tankc.map.message.ReqRunMessage;
+import com.senninha.tankc.map.message.ResBulletMessage;
 import com.senninha.tankc.map.message.ResMapResourceMessage;
 import com.senninha.tankc.map.message.ResRunResultMessage;
 import com.senninha.tankc.ui.GameData;
@@ -28,6 +29,7 @@ public class MapHandler {
 		GameData.getInstance().setMap(res.getList());
 		//更新地图
 		GameData.getInstance().updateMap();
+		GameData.getInstance().setInGame(true);
 		logger.error("推送行走数据成功");
 	}
 	
@@ -38,10 +40,19 @@ public class MapHandler {
 		GameData.getInstance().updateMap(res.getX(), res.getY(), g, res.getDirection(), sessionId);
 		//刷新UI
 		GameData.getInstance().updateMap();
-		logger.error("更新{},{}坐标完毕", res.getX(), res.getY());
+		logger.error("更新坦克{},{}坐标完毕", res.getX(), res.getY());
 //		move();
 	}
 	
+	@MessageInvoke(cmd = CmdConstant.RES_BULLET)
+	public void receiveBullet(int sessionId, BaseMessage message) {
+		ResBulletMessage res = (ResBulletMessage) message;
+		GridStatus g = MapHelper.getBulletStatus(res.getId(), res);
+		GameData.getInstance().updateMapOfBullet(res.getX(), res.getY(), g, 0, res.getId());
+		//刷新UI
+		GameData.getInstance().updateMap();
+		logger.error("更新子弹{},{}坐标完毕", res.getX(), res.getY());
+	}
 	
 //	/**
 //	 * 向下移动，测试用

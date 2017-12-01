@@ -1,5 +1,6 @@
 package com.senninha.tankc.ui.util;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.swing.JPanel;
 
 import com.senninha.tankc.map.Grid;
 import com.senninha.tankc.map.GridStatus;
+import com.senninha.tankc.map.MapHelper;
 
 /**
  * 画出游戏界面
@@ -33,14 +35,20 @@ public class DrawUtil {
 			return;
 		}
 		for(Grid grid : list){
-			if (grid.getStatus() != GridStatus.CAN_RUN.getStatus() || grid.getStatus() != GridStatus.SHELLS.getStatus()) {
+			if (grid.getStatus() != GridStatus.SHELLS.getStatus()) {
 				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL / 2,
 						grid.getY() * PER_PXIEL + PER_PXIEL / 2, PER_PXIEL, PER_PXIEL, jpanel);
 			}else if(grid.getStatus() == GridStatus.SHELLS.getStatus()){//画出子弹
-				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL / 2,
-						grid.getY() * PER_PXIEL + PER_PXIEL / 2, 4, 4, jpanel);
+				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL,
+						grid.getY() * PER_PXIEL + PER_PXIEL, 8, 8, jpanel);
 			}
+			drawRect(graphics, jpanel, list);
 		}
+	}
+	
+	private static void drawRect(Graphics graphics, JPanel jpanel, List<Grid> list) {
+		graphics.setColor(Color.ORANGE);
+		graphics.drawRect(MapHelper.PER_GRID_PIXEL / 2, MapHelper.PER_GRID_PIXEL / 2, MapHelper.WIDTH_GRIDS * MapHelper.PER_GRID_PIXEL, MapHelper.HEIGHT_GRIDS * MapHelper.PER_GRID_PIXEL);
 	}
 	
 	

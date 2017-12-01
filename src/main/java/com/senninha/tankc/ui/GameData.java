@@ -23,7 +23,9 @@ public class GameData {
 	private Map<Integer, TankClient> tankContainer;
 	private volatile byte direction;
 	private volatile boolean isFire;
+	private volatile boolean isInGame;
 	
+
 	/**
 	 * 获取开火，自动设置开火为false
 	 * @return
@@ -43,6 +45,7 @@ public class GameData {
 
 	private GameData(){
 		tankContainer = new HashMap<>();
+		this.direction = -1;
 	}
 	
 	public static GameData getInstance(){
@@ -57,7 +60,7 @@ public class GameData {
 	}
 	
 	/**
-	 * 更新地图,只是更新地图资源，并不刷新ui,这个是当某个坦克进入地图的时候必须调用的方法！！！，或者炮弹进入的时候必须调用这个方法
+	 * 更新地图,只是更新地图资源，并不刷新ui,这个是当某个坦克进入地图的时候必须调用的方法！！！
 	 * @param x	坐标点
 	 * @param y	坐标点
 	 * @param status 更新的格子是什么类型的
@@ -82,9 +85,40 @@ public class GameData {
 			tankContainer.put(sessionId, client);
 		}
 		mapGrids.get(gridIndex).setStatus((byte)status.getStatus());
-
+		return true;
+	}
+	
+	/**
+	 * 更新地图,只是更新地图资源,炮弹进入的时候必须调用这个方法
+	 * @param x	坐标点
+	 * @param y	坐标点
+	 * @param status 更新的格子是什么类型的
+	 * @return	是否更新成功
+	 */
+	public boolean updateMapOfBullet(int x, int y, GridStatus status, int direction, int sessionId){
+		if(this.mapGrids == null){
+			return false;
+		}
+		int gridIndex = MapHelper.convertPixelToGridIndex(x, y);
 		
-
+		TankClient client = tankContainer.get(sessionId);
+		if(client != null){//获取场景中原来是否有子弹
+			int oldIndex = MapHelper.convertPixelToGridIndex(client.getX(), client.getY());
+			if(mapGrids.get(oldIndex).getStatus() == GridStatus.SHELLS.getStatus()) {//1
+				mapGrids.get(oldIndex).setStatus((byte)GridStatus.CAN_RUN.getStatus());
+			}
+			client.setX(x);
+			client.setY(y);
+			client.setDirection(direction);
+		}else{//否则，把这个子弹加入场景
+			client = new TankClient(x, y, direction, sessionId);
+			client.setDirection(direction);
+			tankContainer.put(sessionId, client);
+		}
+		
+		if (mapGrids.get(gridIndex).getStatus() == GridStatus.CAN_RUN.getStatus()) { //2 1和2是为了防止把自己干掉
+			mapGrids.get(gridIndex).setStatus((byte) status.getStatus());
+		}
 		return true;
 	}
 	
@@ -166,6 +200,14 @@ public class GameData {
 	 */
 	public void setDirection(byte direction) {
 		this.direction = direction;
+	}
+
+	public boolean isInGame() {
+		return isInGame;
+	}
+
+	public void setInGame(boolean isInGame) {
+		this.isInGame = isInGame;
 	}	
 	
 	

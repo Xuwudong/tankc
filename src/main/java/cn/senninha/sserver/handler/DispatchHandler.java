@@ -32,6 +32,7 @@ import io.netty.util.AttributeKey;
 public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 	private Logger logger = LoggerFactory.getLogger(DispatchHandler.class);
 	private static long timeWait = 1000 * 30;			//超时重连时间
+	private int sessionId;
 
 	public DispatchHandler(int maxFrameLength, int lengthFieldOffset,
 			int lengthFieldLength, int lengthAdjustment,
@@ -57,7 +58,7 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 						.attr(AttributeKey.valueOf("sessionId"))).get();
 				if (sessionId == null) {
 					// 登陆
-					sessionId = 12580;
+					sessionId = this.sessionId;
 					ctx.channel().attr(AttributeKey.valueOf("sessionId"))
 							.set(sessionId);
 
@@ -76,8 +77,9 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		ReqLoginMessage m = new ReqLoginMessage();
-		m.setSessionId(10086);
-		m.setUsername("senninha");
+		sessionId = (int)(System.currentTimeMillis());
+		m.setSessionId(sessionId);
+		m.setUsername("senninha0-" + sessionId);
 		ctx.writeAndFlush(m);
 		ClientSession.getInstance().setCtx(ctx);
 	}

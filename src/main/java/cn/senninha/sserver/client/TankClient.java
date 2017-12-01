@@ -1,7 +1,7 @@
 package cn.senninha.sserver.client;
 
 /**
- * 地图里的坦克
+ * 地图里的坦克,也可以是子弹--
  * @author senninha
  *
  */

@@ -40,7 +40,7 @@ public class TankGameImages {
 	 * 障碍物图像数组
 	 */
 	public static Image stuffImg[] = {
-			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/brick.gif")),
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/black.png")),
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/brick.gif")),
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/iron.gif")),
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/DTank.gif")),
@@ -56,7 +56,8 @@ public class TankGameImages {
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/LTank_.gif")),
 			
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/bullet.gif")),
-			};
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/bomb_1.png")),		
+	};
 	/**
 	 * 游戏开始图像
 	 */

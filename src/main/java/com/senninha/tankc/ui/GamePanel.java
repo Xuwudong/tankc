@@ -37,6 +37,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if(!GameData.getInstance().isInGame()) {
+			return;
+		}
 		byte direction = -1;
 		if(e.getKeyCode() == KeyEvent.VK_UP){
 			direction = Direction.NORTH.getDirection();
@@ -50,7 +53,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			GameData.getInstance().setFire();
 		}
 		
-		GameData.getInstance().setDirection(direction);
+		if (direction != -1) {
+			GameData.getInstance().setDirection(direction);
+		}
 		logger.error("键盘事件编码：{}" + direction);
 //		MapHandler.move();
 	}

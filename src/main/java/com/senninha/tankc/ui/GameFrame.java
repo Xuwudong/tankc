@@ -1,5 +1,7 @@
 package com.senninha.tankc.ui;
 
+import java.awt.Color;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -139,6 +141,9 @@ public class GameFrame extends JFrame {
 		jMenuBar.add(help);
 		help.add(gameHelp);
 		help.add(aboutGame);
+		
+		/** 设置背景颜色 **/
+		tankGamePanel.setBackground(Color.BLACK);
 
 		// 将panel添加到Frame
 		this.add(tankGamePanel);

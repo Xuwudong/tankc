@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.senninha.tankc.map.message.ReqRunMessage;
 import com.senninha.tankc.map.message.ReqShellsMessage;
+import com.senninha.tankc.map.message.ResBulletMessage;
 import com.senninha.tankc.map.message.ResRunResultMessage;
 import com.senninha.tankc.ui.GameData;
 
@@ -56,12 +57,12 @@ public class MapHelper {
 			req.setDirection(direction);
 			req.setGridStep((byte) 20);
 			ClientSession.getInstance().pushMessage(req);
-			System.out.println("推送变化位置给服务端");
+			logger.debug("推送变化位置给服务端");
 		}
 	}
 	
 	/**
-	 * 根据一系列信息来获取该绘制的坦克状态(包括那些炮弹)
+	 * 根据一系列信息来获取该绘制的坦克状态
 	 * @param sessionId
 	 * @param res
 	 * @param direction
@@ -77,6 +78,23 @@ public class MapHelper {
 				return gg;
 		}
 		return null;
+	}
+	
+	/**
+	 * 获取子弹的状态
+	 * @param id
+	 * @param res
+	 * @param direction
+	 * @return
+	 */
+	public static GridStatus getBulletStatus(int id, ResBulletMessage res) {
+		GridStatus g = null;
+		for(GridStatus gg : GridStatus.values()){
+			if(gg.getStatus() == res.getStatus()) {
+				g = gg;
+			}
+		}
+		return g;
 	}
 	
 	/**
