@@ -115,10 +115,8 @@ public class GameData {
 			client.setDirection(direction);
 			tankContainer.put(sessionId, client);
 		}
-		
-		if (mapGrids.get(gridIndex).getStatus() == GridStatus.CAN_RUN.getStatus()) { //2 1和2是为了防止把自己干掉
 			mapGrids.get(gridIndex).setStatus((byte) status.getStatus());
-		}
+		
 		return true;
 	}
 	

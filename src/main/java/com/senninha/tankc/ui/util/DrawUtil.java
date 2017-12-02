@@ -35,6 +35,12 @@ public class DrawUtil {
 			return;
 		}
 		for(Grid grid : list){
+			if(grid.getStatus() >= GridStatus.BOOM0.getStatus()){
+				//炸弹爆炸后还原成正常的图像,待优化此过程
+				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL / 2,
+						grid.getY() * PER_PXIEL + PER_PXIEL / 2, PER_PXIEL, PER_PXIEL, jpanel);
+				grid.setStatus((byte)GridStatus.CAN_RUN.getStatus());
+			}
 			if (grid.getStatus() != GridStatus.SHELLS.getStatus()) {
 				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL / 2,
 						grid.getY() * PER_PXIEL + PER_PXIEL / 2, PER_PXIEL, PER_PXIEL, jpanel);

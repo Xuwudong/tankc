@@ -37,7 +37,7 @@ public class MapHandler {
 	public void receiveRun(int sessionId, BaseMessage message){
 		ResRunResultMessage res = (ResRunResultMessage) message;
 		GridStatus g = MapHelper.getStatus(sessionId, res, res.getDirection());
-		GameData.getInstance().updateMap(res.getX(), res.getY(), g, res.getDirection(), sessionId);
+		GameData.getInstance().updateMap(res.getX(), res.getY(), g, res.getDirection(), res.getSessionId());
 		//刷新UI
 		GameData.getInstance().updateMap();
 		logger.error("更新坦克{},{}坐标完毕", res.getX(), res.getY());
