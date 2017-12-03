@@ -30,6 +30,14 @@ public class MapHandler {
 		//更新地图
 		GameData.getInstance().updateMap();
 		GameData.getInstance().setInGame(true);
+		
+		/**
+		 * 这个是为了矫正显示的
+		 */
+		ReqRunMessage req = new ReqRunMessage();
+		req.setDirection(Direction.EAST.getDirection());
+		req.setGridStep((byte)1);
+		ClientSession.getInstance().pushMessage(req);
 		logger.error("推送行走数据成功");
 	}
 	
