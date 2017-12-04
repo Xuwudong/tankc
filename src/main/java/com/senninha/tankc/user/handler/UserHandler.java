@@ -3,6 +3,7 @@ package com.senninha.tankc.user.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.senninha.tankc.ui.GameData;
 import com.senninha.tankc.user.message.ReqMatchMessage;
 import com.senninha.tankc.user.message.ResLoginMessage;
 
@@ -26,6 +27,7 @@ public class UserHandler {
 			ClientSession.getInstance().pushMessage(new ReqMatchMessage());
 			
 			logger.error("请求匹配中");
+			GameData.getInstance().updateInfo("正在匹配中.......");
 		}else {
 			logger.error(m.getInfo());
 		}

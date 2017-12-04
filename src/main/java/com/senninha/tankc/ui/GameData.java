@@ -75,7 +75,11 @@ public class GameData {
 		TankClient client = tankContainer.get(sessionId);
 		if(client != null){//获取场景中原来是否存在坦克,如果存在，去除这个破坦克
 			int oldIndex = MapHelper.convertPixelToGridIndex(client.getX(), client.getY());
-			mapGrids.get(oldIndex).setStatus((byte)GridStatus.CAN_RUN.getStatus());
+			Grid oldGrid = mapGrids.get(oldIndex);
+			oldGrid.setPixelX(0);
+			oldGrid.setPixelY(0);
+			oldGrid.setStatus((byte)GridStatus.CAN_RUN.getStatus());
+			
 			client.setX(x);
 			client.setY(y);
 			client.setDirection(direction);
@@ -84,7 +88,13 @@ public class GameData {
 			client.setDirection(direction);
 			tankContainer.put(sessionId, client);
 		}
-		mapGrids.get(gridIndex).setStatus((byte)status.getStatus());
+		
+		/** 设置新的格子 **/
+		Grid newGrid = mapGrids.get(gridIndex);
+		newGrid.setStatus((byte)status.getStatus());;
+		newGrid.setPixelX(x);
+		newGrid.setPixelY(y);
+		
 		return true;
 	}
 	
@@ -121,10 +131,12 @@ public class GameData {
 	}
 	
 	/**
-	 * 清理地图信息
+	 * 清理地图信息,所有的信息，包括坦克子弹
 	 */
 	public void clearMap(){
 		this.mapGrids = null;
+		this.tankContainer = null;
+		this.isInGame = false;
 	}
 	
 	/**
@@ -157,6 +169,15 @@ public class GameData {
 	public void updateMap(){
 		if(gameFrame != null){
 			gameFrame.repaint();
+		}
+	}
+	
+	/**
+	 * 刷新信息
+	 */
+	public void updateInfo(String text) {
+		if(gameFrame != null) {
+			gameFrame.printInfo(text);
 		}
 	}
 

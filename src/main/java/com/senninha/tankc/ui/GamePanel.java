@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.senninha.tankc.map.Direction;
 import com.senninha.tankc.ui.util.DrawUtil;
+import com.senninha.tankc.user.message.ReqMatchMessage;
+
+import cn.senninha.sserver.client.ClientSession;
 
 /**
  * 游戏面板，继承自JPanel，实现KeyListener,ActionListener接口
@@ -26,8 +29,13 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	private Logger logger = LoggerFactory.getLogger(GamePanel.class);
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		switch(e.getActionCommand()) {
+			case ActionCommand.START_TWO_PEOPLE:
+				ClientSession.getInstance().pushMessage(new ReqMatchMessage());
+				logger.error("匹配比赛:{}" + ClientSession.getInstance().getSessionId());
+				break;
+			
+		}
 	}
 
 	@Override
