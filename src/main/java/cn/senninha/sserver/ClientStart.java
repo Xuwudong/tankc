@@ -137,7 +137,11 @@ public class ClientStart {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ClientStart client = new ClientStart("localhost", 9527, 1024 * 16, 1, 2, 0,
+		String host = "localshot";
+		if(args != null || args.length != 0){
+			host = args[0];
+		}
+		ClientStart client = new ClientStart(host, 9527, 1024 * 16, 1, 2, 0,
 				3, true);
 		start = client;
 		client.connect();
