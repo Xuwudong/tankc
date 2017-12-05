@@ -1,17 +1,12 @@
 package com.senninha.tankc.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import com.senninha.tankc.map.MapHelper;
-import com.senninha.tankc.map.handler.MapHandler;
-import com.senninha.tankc.ui.util.DrawUtil;
 
 /**
  * 游戏Frame
@@ -26,21 +21,17 @@ public class GameFrame extends JFrame {
 	 * @Fields serialVersionUID
 	 */
 	private static final long serialVersionUID = -1176914786963603304L;
-	/**
-	 * 菜单条
-	 */
-	private JMenuBar jMenuBar;
-	
-	/**
-	 * 开始双人对战
-	 */
-	private JMenu twoPeople;
-	private JMenuItem startTwoPeople;
 
 	/**
 	 * 游戏面板
 	 */
 	private GamePanel tankGamePanel;
+	
+	private JMenuBar menuBar;
+	/** 菜单1 **/
+	private JMenu startMenu;
+	/** 开始二人游戏 **/
+	private JMenuItem twoPeopleMenuItem;
 	
 	private JLabel label;
 
@@ -48,23 +39,19 @@ public class GameFrame extends JFrame {
 	 * 构造函数，初始化相关信息
 	 */
 	public GameFrame() {
-
+		/** 初始化一系列的东西 **/
 		tankGamePanel = new GamePanel();
-
-		// 菜单相关
-		jMenuBar = new JMenuBar();
-		
-		twoPeople = new JMenu("双人对战");
-		startTwoPeople = new JMenu("开始双人对战");
-		startTwoPeople.setActionCommand(ActionCommand.START_TWO_PEOPLE);
-		startTwoPeople.addActionListener(tankGamePanel);
+		menuBar = new JMenuBar();
+		startMenu = new JMenu("开始游戏");
+		twoPeopleMenuItem = new JMenuItem("开始二人游戏");
+		twoPeopleMenuItem.setActionCommand(ActionCommand.START_TWO_PEOPLE);
 		
 		label = new JLabel("");				//显示战况的
 
+		
+		/** 监听 **/
 		this.addKeyListener(tankGamePanel); // 游戏面板来作为按键侦听器
-
-//		 菜单条
-		this.setJMenuBar(jMenuBar);
+		twoPeopleMenuItem.addActionListener(tankGamePanel);
 		
 		/** 设置背景颜色 **/
 		tankGamePanel.setBackground(Color.BLACK);
@@ -72,8 +59,13 @@ public class GameFrame extends JFrame {
 		// 将panel添加到Frame
 		this.add(tankGamePanel);
 		tankGamePanel.add(label);
-		// 加入菜单
-		this.setJMenuBar(jMenuBar);
+		
+		/** 添加菜单类 **/
+		this.setJMenuBar(menuBar);
+		menuBar.add(startMenu);
+		
+		startMenu.add(twoPeopleMenuItem);
+		
 		
 
 	}

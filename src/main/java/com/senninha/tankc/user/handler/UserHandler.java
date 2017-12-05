@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.senninha.tankc.ui.GameData;
-import com.senninha.tankc.user.message.ReqMatchMessage;
 import com.senninha.tankc.user.message.ResLoginMessage;
 
 import cn.senninha.sserver.client.ClientSession;
@@ -23,11 +22,10 @@ public class UserHandler {
 		if(m.getStatus() == 1) {
 			logger.error("登陆成功");
 			
-			//开始匹配
-			ClientSession.getInstance().pushMessage(new ReqMatchMessage());
-			
-			logger.error("请求匹配中");
-			GameData.getInstance().updateInfo("正在匹配中.......");
+//			//开始匹配
+//			ClientSession.getInstance().pushMessage(new ReqMatchMessage());
+//			
+//			logger.error("请求匹配中");
 		}else {
 			logger.error(m.getInfo());
 		}
@@ -42,5 +40,7 @@ public class UserHandler {
 	@MessageInvoke(cmd = CmdConstant.RES_MATCH)
 	public void resMatch(int sessionId, BaseMessage message) {
 		logger.error("等待匹配：{}", message.toString());
+		GameData.getInstance().updateTitle("正在匹配中.....");
+		GameData.getInstance().updateInfo("正在匹配中....");
 	}
 }

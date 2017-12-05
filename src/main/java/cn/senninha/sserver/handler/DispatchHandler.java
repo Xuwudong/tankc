@@ -1,20 +1,16 @@
 package cn.senninha.sserver.handler;
 
-import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.senninha.tankc.map.handler.MapHandler;
 import com.senninha.tankc.user.message.ReqHeartbeatMessge;
 import com.senninha.tankc.user.message.ReqLoginMessage;
+import com.senninha.tankc.user.message.ResHeartbeatMessge;
 
-import cn.senninha.sserver.ClientStart;
 import cn.senninha.sserver.client.ClientSession;
 import cn.senninha.sserver.lang.ByteBufUtil;
 import cn.senninha.sserver.lang.codec.CodecFactory;
 import cn.senninha.sserver.lang.dispatch.HandleContext;
-import cn.senninha.sserver.lang.dispatch.HandlerFactory;
 import cn.senninha.sserver.lang.message.BaseMessage;
 import cn.senninha.sserver.message.CmdConstant;
 import io.netty.buffer.ByteBuf;
@@ -65,7 +61,8 @@ public class DispatchHandler extends LengthFieldBasedFrameDecoder {
 				}
 				
 				if(message.getCmd() == CmdConstant.HEART_RES){
-					logger.error("收到心跳：{}", message);
+					ResHeartbeatMessge res = (ResHeartbeatMessge) message;
+					logger.error("ping：{}", (res.getCurrent() - res.getTime()));
 					return null;
 				}
 				HandleContext.getInstance().dispatch(sessionId, message);

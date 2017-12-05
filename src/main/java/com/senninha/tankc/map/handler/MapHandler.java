@@ -6,14 +6,13 @@ import org.slf4j.LoggerFactory;
 import com.senninha.tankc.map.Direction;
 import com.senninha.tankc.map.GridStatus;
 import com.senninha.tankc.map.MapHelper;
-import com.senninha.tankc.map.message.ResBattleResultMessage;
 import com.senninha.tankc.map.message.ReqRunMessage;
+import com.senninha.tankc.map.message.ResBattleResultMessage;
 import com.senninha.tankc.map.message.ResBulletMessage;
 import com.senninha.tankc.map.message.ResHitMessage;
 import com.senninha.tankc.map.message.ResMapResourceMessage;
 import com.senninha.tankc.map.message.ResRunResultMessage;
 import com.senninha.tankc.ui.GameData;
-import com.senninha.tankc.ui.GamePanel;
 
 import cn.senninha.sserver.client.ClientSession;
 import cn.senninha.sserver.lang.dispatch.MessageHandler;
@@ -29,6 +28,7 @@ public class MapHandler {
 	public void receiveMap(int sessionId, BaseMessage message) {
 		logger.error("收到地图阻挡信息");
 		ResMapResourceMessage res = (ResMapResourceMessage) message;
+		GameData.getInstance().init();
 		GameData.getInstance().setMap(res.getList());
 		//更新地图
 		GameData.getInstance().updateMap();
@@ -42,6 +42,9 @@ public class MapHandler {
 		req.setGridStep((byte)1);
 		ClientSession.getInstance().pushMessage(req);
 		logger.error("推送行走数据成功");
+		
+		GameData.getInstance().updateInfo("游戏开始啦");
+		GameData.getInstance().updateTitle("tank0.0");
 	}
 	
 	@MessageInvoke(cmd = CmdConstant.RUN_RES)

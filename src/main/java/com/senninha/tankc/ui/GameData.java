@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.senninha.tankc.map.Grid;
 import com.senninha.tankc.map.GridStatus;
 import com.senninha.tankc.map.MapHelper;
@@ -16,6 +19,7 @@ import cn.senninha.sserver.client.TankClient;
  *
  */
 public class GameData {
+	private Logger logger = LoggerFactory.getLogger(GameData.class);
 	private static GameData instance;
 	/** 地图阻挡的数据 **/
 	private List<Grid> mapGrids;
@@ -44,8 +48,19 @@ public class GameData {
 	}
 
 	private GameData(){
-		tankContainer = new HashMap<>();
-		this.direction = -1;
+		init();
+	}
+	
+	/**
+	 * 开始新游戏的时候才调用
+	 */
+	public void init() {
+		if (tankContainer == null) {
+			tankContainer = new HashMap<>();
+			this.direction = -1;
+		}else {
+			logger.debug("GameData已经初始化");
+		}
 	}
 	
 	public static GameData getInstance(){
@@ -178,6 +193,16 @@ public class GameData {
 	public void updateInfo(String text) {
 		if(gameFrame != null) {
 			gameFrame.printInfo(text);
+		}
+	}
+	
+	/**
+	 * 刷新顶部标题
+	 * @param text
+	 */
+	public void updateTitle(String text) {
+		if(gameFrame != null) {
+			gameFrame.setTitle(text);
 		}
 	}
 

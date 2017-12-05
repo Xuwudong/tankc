@@ -33,8 +33,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 			case ActionCommand.START_TWO_PEOPLE:
 				ClientSession.getInstance().pushMessage(new ReqMatchMessage());
 				logger.error("匹配比赛:{}" + ClientSession.getInstance().getSessionId());
-				break;
-			
+				break;			
 		}
 	}
 

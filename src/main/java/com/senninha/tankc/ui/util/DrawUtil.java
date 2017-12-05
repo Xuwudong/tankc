@@ -51,8 +51,8 @@ public class DrawUtil {
 				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getPixelX(),
 						grid.getPixelY(), PER_PXIEL, PER_PXIEL, jpanel);
 			}
-			drawRect(graphics, jpanel, list);
 		}
+		drawRect(graphics, jpanel, list);
 	}
 	
 	private static void drawRect(Graphics graphics, JPanel jpanel, List<Grid> list) {
