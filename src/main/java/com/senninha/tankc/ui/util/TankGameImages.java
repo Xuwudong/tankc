@@ -56,7 +56,12 @@ public class TankGameImages {
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/LTank_.gif")),
 			
 			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/bullet.gif")),
-			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/bomb_3.png")),		
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/bomb_3.png")),
+			
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/AI_UP.jpg")),		
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/AI_RIGHT.jpg")),		
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/AI_DOWN.jpg")),		
+			Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/images/AI_LEFT.jpg")),		
 	};
 	/**
 	 * 游戏开始图像
