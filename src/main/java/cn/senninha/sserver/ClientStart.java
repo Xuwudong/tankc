@@ -1,14 +1,18 @@
 package cn.senninha.sserver;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import javax.swing.JFrame;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.senninha.tankc.map.handler.MapHandler;
+import com.senninha.tankc.map.Grid;
+import com.senninha.tankc.map.GridStatus;
+import com.senninha.tankc.map.MapHelper;
+import com.senninha.tankc.map.util.ASNode;
+import com.senninha.tankc.map.util.ASUtil;
 import com.senninha.tankc.ui.GameData;
 import com.senninha.tankc.ui.GameFrame;
 import com.senninha.tankc.ui.util.DrawUtil;
@@ -146,5 +150,17 @@ public class ClientStart {
 		start = client;
 		client.connect();
 		client.startUI();
+		/** 寻路测试
+		List<Grid> grids = MapHelper.generateGridRandom();
+		Grid g = grids.get(220);
+		g.setStatus((byte)GridStatus.CAN_RUN.getStatus());
+		ASNode node = ASUtil.aStar(grids, grids.get(0), grids.get(94), 20, 15);
+		GameData.getInstance().setMap(grids);
+		GameData.getInstance().setInGame(true);
+
+		System.out.println(node.toString());
+		
+		GameData.getInstance().updateMap();
+		 **/
 	}
 }

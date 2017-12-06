@@ -1,5 +1,9 @@
 package com.senninha.tankc.map;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +31,30 @@ public class MapHelper {
 	public static final int TOTAL_GRIDS = WIDTH_GRIDS * HEIGHT_GRIDS;
 
 	public static final int PER_GRID_PIXEL = 40; // 每个格子的像素
-//	private static Random r = new Random();
+	private static Random r = new Random();
 
 
+	public static List<Grid> generateGridRandom() {
+		List<Grid> list = new ArrayList<Grid>(TOTAL_GRIDS);
+		for (int i = 0; i < TOTAL_GRIDS; i++) {
+			if (i % 5 == 0) {
+				list.add(new Grid((byte) (i % WIDTH_GRIDS), (byte) (i / WIDTH_GRIDS),
+						(byte) (GridStatus.CAN_NOT_SHOT.getStatus())));
+				if(r.nextInt(2) == 0){
+					list.get(i).setStatus((byte)GridStatus.CAN_RUN.getStatus());
+				}
+//				if(i < 20) {
+//					list.get(i).setStatus((byte)GridStatus.CAN_RUN.getStatus());
+//				}
+			} else {
+				list.add(new Grid((byte) (i % WIDTH_GRIDS), (byte) (i / WIDTH_GRIDS),
+						(byte) (GridStatus.CAN_RUN.getStatus())));
+			}
+//			list.get(i).setStatus(GridStatus.CAN_RUN.getStatus());
+		}
+		list.get(0).setStatus((byte)GridStatus.CAN_RUN.getStatus()); //设置出生点
+		return list;
+	}
 	/**
 	 * 根据像素返回这个点所占据的格子下标，因为格子是list储存的。。
 	 * 
