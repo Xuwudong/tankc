@@ -96,7 +96,11 @@ public class MapHelper {
 	public static GridStatus getStatus(int sessionId, ResRunResultMessage res, int direction){
 		int base = 0;
 		base = sessionId ==  res.getSessionId() ? 4 : 8;
-		base = base + direction;
+		if(res.getIsAI()) { //如果是AI的话
+			base = GridStatus.AI_UP.getStatus() + direction;
+		} else {
+			base = base + direction;
+		}
 		GridStatus[] gs = GridStatus.values();
 		for(GridStatus gg : gs){
 			if(gg.getStatus() == base)

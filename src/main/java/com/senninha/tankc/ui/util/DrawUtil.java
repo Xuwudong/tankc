@@ -50,6 +50,10 @@ public class DrawUtil {
 			}else if(grid.getStatus() >= 4 && grid.getStatus() <= 11) {//坦克的绘制方法
 				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getPixelX(),
 						grid.getPixelY(), PER_PXIEL, PER_PXIEL, jpanel);
+			}else if(grid.getStatus() >= GridStatus.AI_UP.getStatus() && grid.getStatus() <= GridStatus.AI_LEFT.getStatus()) {
+				//AI坦克
+				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getPixelX(),
+						grid.getPixelY(), PER_PXIEL, PER_PXIEL, jpanel);
 			}
 		}
 		drawRect(graphics, jpanel, list);
