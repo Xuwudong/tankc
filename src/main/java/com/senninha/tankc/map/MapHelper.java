@@ -147,4 +147,68 @@ public class MapHelper {
 			}
 		}
 	}
+	
+	/**
+	 * 优化显示
+	 * @param grids
+	 */
+	public static void optimizeDisplay(List<Grid> grids) {
+		/** 分别是不是没有阻挡
+		 * 	1.上边没有的话，y + half，height - half
+		 *  2.左边没有的话，x + half, width - half
+		 *  3.右边没有的话，width - half
+		 *  3.下边没有的话, height - half
+		 **/
+		
+		int temY, temX;
+		int x, y;
+		int halfValue = MapHelper.PER_GRID_PIXEL / 2;
+		int temGridIndex;
+		for(int i = 0 ; i < grids.size() ; i++) {
+			Grid g = grids.get(i);
+			if(g.getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
+				continue;
+			}
+			int[] xy = convertGridIndexToPixel(i);
+			x = xy[0]; y = xy[1];
+			
+			/** 上检测 **/
+			temY = y - halfValue * 2;
+			temGridIndex = MapHelper.convertPixelToGridIndex(x, temY);
+			if(grids.get(temGridIndex).getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
+				 g.setPixelY(g.getY() * PER_GRID_PIXEL + halfValue);
+				 g.setHeight(PER_GRID_PIXEL - halfValue);
+			}
+			
+			/** 右检测 **/
+			temX = x + halfValue * 2;
+			temGridIndex = MapHelper.convertPixelToGridIndex(temX, y);
+			if(grids.get(temGridIndex).getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
+				 g.setWidth(PER_GRID_PIXEL - halfValue);
+			}
+			
+			/**下检测 **/
+			temY = y + halfValue * 2;
+			temGridIndex = MapHelper.convertPixelToGridIndex(x, temY);
+			if(grids.get(temGridIndex).getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
+				 g.setHeight(PER_GRID_PIXEL - halfValue);
+			}
+			
+			/**左检测 **/
+			temX = x - halfValue * 2;
+			temGridIndex = MapHelper.convertPixelToGridIndex(temX, y);
+			if(grids.get(temGridIndex).getStatus() == GridStatus.CAN_NOT_SHOT.getStatus()) {
+				 g.setPixelX(g.getX() * PER_GRID_PIXEL + halfValue);
+				 g.setWidth(PER_GRID_PIXEL - halfValue);
+			}
+		}
+	}
+	
+	
+	public static int[] convertGridIndexToPixel(int gridIndex) {
+		int[] xy = new int[2];
+		xy[0] = gridIndex % WIDTH_GRIDS * PER_GRID_PIXEL;
+		xy[1] = gridIndex / WIDTH_GRIDS * PER_GRID_PIXEL;
+		return xy;
+	}
 }

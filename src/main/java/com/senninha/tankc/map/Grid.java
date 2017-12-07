@@ -1,14 +1,11 @@
 package com.senninha.tankc.map;
 
-import cn.senninha.sserver.lang.codec.MessageWrapperAnnotation;
-import cn.senninha.sserver.message.CmdConstant;
-
 /**
  * 格子
  * @author senninha
  *
  */
-@MessageWrapperAnnotation(cmd = CmdConstant.GRID)
+//@MessageWrapperAnnotation(cmd = CmdConstant.GRID)
 public class Grid {
 	private byte x;
 	private byte y;
@@ -16,11 +13,19 @@ public class Grid {
 	private int pixelY;
 	private byte status;
 	private int sessionId;
+	/** 为了前端优化的，不应该加入到协议中 **/
+	private int width;
+	private int height;
+	
 	public Grid(byte x, byte y, byte status) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.status = status;
+		
+		/** 前端优化用 **/
+		this.width = MapHelper.PER_GRID_PIXEL;
+		this.height = MapHelper.PER_GRID_PIXEL;
 	}
 	
 	
@@ -81,5 +86,34 @@ public class Grid {
 	public void setPixelY(int pixelY) {
 		this.pixelY = pixelY;
 	}
+	/**
+	 * 优化显示的，不应该加入传输协议中
+	 * @return
+	 */
+	public int getWidth() {
+		return width;
+	}
+	/**
+	 * 优化显示的，不应该加入传输协议中
+	 * @return
+	 */
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	/**
+	 * 优化显示的，不应该加入传输协议中
+	 * @return
+	 */
+	public int getHeight() {
+		return height;
+	}
+	/**
+	 * 优化显示的，不应该加入传输协议中
+	 * @return
+	 */
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
 	
 }

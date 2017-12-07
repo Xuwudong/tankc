@@ -1,11 +1,16 @@
 package com.senninha.tankc.map.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.senninha.tankc.map.Direction;
+import com.senninha.tankc.map.Grid;
 import com.senninha.tankc.map.GridStatus;
 import com.senninha.tankc.map.MapHelper;
+import com.senninha.tankc.map.message.GridMessage;
 import com.senninha.tankc.map.message.ReqRunMessage;
 import com.senninha.tankc.map.message.ResBattleResultMessage;
 import com.senninha.tankc.map.message.ResBulletMessage;
@@ -29,7 +34,7 @@ public class MapHandler {
 		logger.error("收到地图阻挡信息");
 		ResMapResourceMessage res = (ResMapResourceMessage) message;
 		GameData.getInstance().init();
-		GameData.getInstance().setMap(res.getList());
+		GameData.getInstance().setMap(getGrid(res.getList()));
 		//更新地图
 		GameData.getInstance().updateMap();
 		GameData.getInstance().setInGame(true);
@@ -106,6 +111,16 @@ public class MapHandler {
 			info = "你已经gg了								";
 		}
 		GameData.getInstance().updateInfo(info);
+	}
+	
+	private List<Grid> getGrid(List<GridMessage> list){
+		List<Grid> grids = new ArrayList<>();
+		
+		for(GridMessage gm : list) {
+			Grid g = new Grid(gm.getX(), gm.getY(), gm.getStatus());
+			grids.add(g);
+		}
+		return grids;
 	}
 //	/**
 //	 * 向下移动，测试用
