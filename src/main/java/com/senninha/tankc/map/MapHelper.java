@@ -153,6 +153,17 @@ public class MapHelper {
 	 * @param grids
 	 */
 	public static void optimizeDisplay(List<Grid> grids) {
+		/**
+		 * 先初始化一波砖块
+		 */
+		for(Grid grid : grids){
+			if(grid.getStatus() == GridStatus.CAN_NOT_SHOT.getStatus()){
+				grid.setHeight(PER_GRID_PIXEL);
+				grid.setWidth(PER_GRID_PIXEL);
+				grid.setPixelX(grid.getX() * PER_GRID_PIXEL);
+				grid.setPixelY(grid.getY() * PER_GRID_PIXEL);
+			}
+		}
 		/** 分别是不是没有阻挡
 		 * 	1.上边没有的话，y + half，height - half
 		 *  2.左边没有的话，x + half, width - half
@@ -177,29 +188,29 @@ public class MapHelper {
 			temGridIndex = MapHelper.convertPixelToGridIndex(x, temY);
 			if(grids.get(temGridIndex).getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
 				 g.setPixelY(g.getY() * PER_GRID_PIXEL + halfValue);
-				 g.setHeight(PER_GRID_PIXEL - halfValue);
+				 g.setHeight(g.getHeight() - halfValue);
 			}
 			
 			/** 右检测 **/
 			temX = x + halfValue * 2;
 			temGridIndex = MapHelper.convertPixelToGridIndex(temX, y);
 			if(grids.get(temGridIndex).getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
-				 g.setWidth(PER_GRID_PIXEL - halfValue);
+				 g.setWidth(g.getWidth() - halfValue);
 			}
 			
 			/**下检测 **/
 			temY = y + halfValue * 2;
 			temGridIndex = MapHelper.convertPixelToGridIndex(x, temY);
 			if(grids.get(temGridIndex).getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
-				 g.setHeight(PER_GRID_PIXEL - halfValue);
+				 g.setHeight(g.getHeight() - halfValue);
 			}
 			
 			/**左检测 **/
 			temX = x - halfValue * 2;
 			temGridIndex = MapHelper.convertPixelToGridIndex(temX, y);
-			if(grids.get(temGridIndex).getStatus() == GridStatus.CAN_NOT_SHOT.getStatus()) {
+			if(grids.get(temGridIndex).getStatus() != GridStatus.CAN_NOT_SHOT.getStatus()) {
 				 g.setPixelX(g.getX() * PER_GRID_PIXEL + halfValue);
-				 g.setWidth(PER_GRID_PIXEL - halfValue);
+				 g.setWidth(g.getWidth() - halfValue);
 			}
 		}
 	}
