@@ -21,11 +21,11 @@ public class UserHandler {
 		ResLoginMessage m = (ResLoginMessage) message;
 		if(m.getStatus() == 1) {
 			logger.error("登陆成功");
-			
+			GameData.getInstance().updateTitle(m.getInfo());
 //			//开始匹配
 //			ClientSession.getInstance().pushMessage(new ReqMatchMessage());
 //			
-//			logger.error("请求匹配中");
+//			logger.error("请求匹配中");text
 		}else {
 			logger.error(m.getInfo());
 		}

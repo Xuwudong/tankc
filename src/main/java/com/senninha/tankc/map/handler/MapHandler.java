@@ -13,6 +13,7 @@ import com.senninha.tankc.map.GridStatus;
 import com.senninha.tankc.map.MapHelper;
 import com.senninha.tankc.map.message.GridMessage;
 import com.senninha.tankc.map.message.ReqRunMessage;
+import com.senninha.tankc.map.message.ResAiHurtMessage;
 import com.senninha.tankc.map.message.ResBattleResultMessage;
 import com.senninha.tankc.map.message.ResBulletMessage;
 import com.senninha.tankc.map.message.ResHitMessage;
@@ -131,6 +132,16 @@ public class MapHandler {
 			grids.add(g);
 		}
 		return grids;
+	}
+	
+	@MessageInvoke(cmd = CmdConstant.RES_AI_HURT)
+	public void aiHurt(int sessionId, BaseMessage message) {
+		ResAiHurtMessage res = (ResAiHurtMessage) message;
+		if(res.getSessionId() == sessionId) { //自己被攻击
+			GameData.getInstance().updateInfo("你被警察抓到，生命值-1，5s后警察继续追击");
+		}else { 		//对手被攻击
+			GameData.getInstance().updateInfo("对手被警察抓到，生命值-1");
+		}
 	}
 //	/**
 //	 * 向下移动，测试用
