@@ -2,6 +2,7 @@ package com.senninha.tankc.map.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,10 @@ import com.senninha.tankc.map.message.ResRunResultMessage;
 import com.senninha.tankc.ui.GameData;
 
 import cn.senninha.sserver.client.ClientSession;
+import cn.senninha.sserver.lang.dispatch.HandleContext;
 import cn.senninha.sserver.lang.dispatch.MessageHandler;
 import cn.senninha.sserver.lang.dispatch.MessageInvoke;
+import cn.senninha.sserver.lang.dispatch.Task;
 import cn.senninha.sserver.lang.message.BaseMessage;
 import cn.senninha.sserver.message.CmdConstant;
 
@@ -85,12 +88,19 @@ public class MapHandler {
 			info = "您被击中了，只剩下:" + res.getRemainHp() + "血了!			";
 			
 			
-			/** 构造一个移动来更新ui，智障。。。**/
-			byte direction = (byte) GameData.getInstance().getTankContainer().get(sessionId).getDirection();
-			ReqRunMessage req = new ReqRunMessage();
-			req.setDirection(direction);
-			req.setGridStep((byte)1);
-			ClientSession.getInstance().pushMessage(req);
+			/** 构造一个移动100ms后提交移动更新UI来更新ui，智障。。。**/
+			HandleContext.getInstance().addCommand(0, new Task(200, false, 0, TimeUnit.MILLISECONDS, new Runnable() {
+				
+				@Override
+				public void run() {
+					byte direction = (byte) GameData.getInstance().getTankContainer().get(sessionId).getDirection();
+					ReqRunMessage req = new ReqRunMessage();
+					req.setDirection(direction);
+					req.setGridStep((byte)1);
+					ClientSession.getInstance().pushMessage(req);					
+				}
+			}));
+
 			/** 迫不得已的智障做法 **/
 			
 			
