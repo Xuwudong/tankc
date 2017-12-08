@@ -200,7 +200,11 @@ public class GameData {
 			client.setDirection(direction);
 			tankContainer.put(sessionId, client);
 		}
-			mapGrids.get(gridIndex).setStatus((byte) status.getStatus());
+			Grid grid = mapGrids.get(gridIndex);
+			grid.setStatus((byte) status.getStatus());
+			//设置像素点
+			grid.setPixelX(x);
+			grid.setPixelY(y);
 		
 		return true;
 	}

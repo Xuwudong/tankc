@@ -31,6 +31,9 @@ public class MapHelper {
 	public static final int TOTAL_GRIDS = WIDTH_GRIDS * HEIGHT_GRIDS;
 
 	public static final int PER_GRID_PIXEL = 40; // 每个格子的像素
+	
+	public static final int BULLET_GRID_PIXEL = 8; //子弹的像素
+	public static final int BOOM_GRID_PIXEL = 20; //爆炸的像素
 	private static Random r = new Random();
 
 

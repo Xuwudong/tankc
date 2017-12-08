@@ -37,16 +37,16 @@ public class DrawUtil {
 		for(Grid grid : list){
 			if(grid.getStatus() == GridStatus.BOOM0.getStatus()){
 				//炸弹爆炸后还原成正常的图像,待优化此过程
-				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL - PER_PXIEL / 2,
-						grid.getY() * PER_PXIEL - PER_PXIEL / 2, PER_PXIEL, PER_PXIEL, jpanel);
+				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getPixelX() - MapHelper.BOOM_GRID_PIXEL / 2,
+						grid.getPixelY() - MapHelper.BOOM_GRID_PIXEL / 2, MapHelper.BOOM_GRID_PIXEL, MapHelper.BOOM_GRID_PIXEL, jpanel);
 //				grid.setStatus((byte)GridStatus.CAN_RUN.getStatus());
 			}
 			if (grid.getStatus() == GridStatus.CAN_NOT_SHOT.getStatus()) {//阻挡的绘制方法
 				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getPixelX(),
 						grid.getPixelY(), grid.getWidth(), grid.getHeight(), jpanel);
 			}else if(grid.getStatus() == GridStatus.SHELLS.getStatus()){//画出子弹
-				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getX() * PER_PXIEL + PER_PXIEL,
-						grid.getY() * PER_PXIEL + PER_PXIEL, 8, 8, jpanel);
+				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getPixelX() - MapHelper.BULLET_GRID_PIXEL / 2,
+						grid.getPixelY() - MapHelper.BULLET_GRID_PIXEL / 2, MapHelper.BULLET_GRID_PIXEL, MapHelper.BULLET_GRID_PIXEL, jpanel);
 			}else if(grid.getStatus() >= 4 && grid.getStatus() <= 11) {//坦克的绘制方法
 				graphics.drawImage(TankGameImages.stuffImg[grid.getStatus()], grid.getPixelX() - PER_PXIEL / 2,
 						grid.getPixelY() - PER_PXIEL / 2, PER_PXIEL, PER_PXIEL, jpanel);
@@ -61,7 +61,7 @@ public class DrawUtil {
 	
 	private static void drawRect(Graphics graphics, JPanel jpanel, List<Grid> list) {
 		graphics.setColor(Color.ORANGE);
-		graphics.drawRect(0, 0, MapHelper.WIDTH_GRIDS * MapHelper.PER_GRID_PIXEL + MapHelper.PER_GRID_PIXEL, MapHelper.HEIGHT_GRIDS * MapHelper.PER_GRID_PIXEL + MapHelper.PER_GRID_PIXEL);
+		graphics.drawRect(0, 0, MapHelper.WIDTH_GRIDS * MapHelper.PER_GRID_PIXEL, MapHelper.HEIGHT_GRIDS * MapHelper.PER_GRID_PIXEL);
 	}
 	
 	
