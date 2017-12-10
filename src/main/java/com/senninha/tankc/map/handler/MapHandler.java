@@ -14,6 +14,7 @@ import com.senninha.tankc.map.MapHelper;
 import com.senninha.tankc.map.message.GridMessage;
 import com.senninha.tankc.map.message.ReqRunMessage;
 import com.senninha.tankc.map.message.ResAiHurtMessage;
+import com.senninha.tankc.map.message.ResAiKillMessage;
 import com.senninha.tankc.map.message.ResBattleResultMessage;
 import com.senninha.tankc.map.message.ResBulletMessage;
 import com.senninha.tankc.map.message.ResHitMessage;
@@ -123,6 +124,20 @@ public class MapHandler {
 		}
 		GameData.getInstance().updateInfo(info);
 	}
+	
+	@MessageInvoke(cmd = CmdConstant.RES_AI_DIE)
+	public void receiveAIDie(int sessionId, BaseMessage message){
+		ResAiKillMessage res = (ResAiKillMessage) message;
+		GameData.getInstance().clearMap();	//清理战斗
+		
+		String info = "";
+		if(sessionId != res.getDisSessionId()) {
+			info = "你赢了，对方" + res.getInfo();
+		}else {
+			info = "你" + res.getInfo();
+		}
+		GameData.getInstance().updateInfo(info);
+	}	
 	
 	private List<Grid> getGrid(List<GridMessage> list){
 		List<Grid> grids = new ArrayList<>();

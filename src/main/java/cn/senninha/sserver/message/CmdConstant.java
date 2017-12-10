@@ -13,6 +13,7 @@ public interface CmdConstant {
 	/** 请求匹配 **/
 	public static final int REQ_MATCH = 1005;
 	
+	
 	/**------------------------------------------------------------------**/
 	
 	/** resp **/
@@ -34,6 +35,9 @@ public interface CmdConstant {
 	public static final int RES_HIT_RESULT = 2008;
 	/** Ai 伤害推送 **/
 	public static final int RES_AI_HURT = 2009;
+	/** 被AI干掉 **/
+	public static final int RES_AI_DIE = 2010;
+	
 	
 	
 	/** 内部封装cmd **/
