@@ -20,6 +20,7 @@ import com.senninha.tankc.map.message.ResBulletMessage;
 import com.senninha.tankc.map.message.ResHitMessage;
 import com.senninha.tankc.map.message.ResMapResourceMessage;
 import com.senninha.tankc.map.message.ResRunResultMessage;
+import com.senninha.tankc.map.message.ResShotAiMessage;
 import com.senninha.tankc.ui.GameData;
 
 import cn.senninha.sserver.client.ClientSession;
@@ -84,8 +85,12 @@ public class MapHandler {
 		logger.debug("{}击中了{}", res.getHitFrom(), res.getHitTo());
 		
 		String info = "";
-		if(sessionId == res.getHitFrom()) {
-			info = "您击中了对方,对方只剩下:" + res.getRemainHp() + "血了！			";
+		if(sessionId != res.getHitTo()) {
+			if(sessionId == res.getHitFrom()) {
+				info = "您击中了对方,对方只剩下:" + res.getRemainHp() + "血了！			";
+			}else {
+				info = "AI击中了对手,对手只剩下:" + res.getRemainHp() + "血了";
+			}
 		}else {
 			info = "您被击中了，只剩下:" + res.getRemainHp() + "血了!			";
 			
@@ -117,7 +122,7 @@ public class MapHandler {
 		GameData.getInstance().clearMap();	//清理战斗
 		
 		String info = "";
-		if(sessionId == res.getFromSessionId()) {
+		if(sessionId != res.getDieSessionId()) {
 			info = "你击败了:" + res.getName() + "						";
 		}else {
 			info = "你已经gg了								";
@@ -138,6 +143,20 @@ public class MapHandler {
 		}
 		GameData.getInstance().updateInfo(info);
 	}	
+	
+	@MessageInvoke(cmd = CmdConstant.RES_SHOT_AI)
+	public void receiveShootAi(int sessionId, BaseMessage message) {
+		ResShotAiMessage res = (ResShotAiMessage) message;
+		int myself = ClientSession.getInstance().getSessionId();
+		String info = null;
+		if(myself == res.getSessionId()) {		//自己射中了ai
+			info = "你射中了Ai，血量变成:" + res.getBlood() + "但是ai的仇恨对象变成你";
+		}else {
+			info = "对手射中了ai，血量+1,变为:" + res.getBlood();
+		}
+		logger.debug(info);
+		GameData.getInstance().updateInfo(info);
+	}
 	
 	private List<Grid> getGrid(List<GridMessage> list){
 		List<Grid> grids = new ArrayList<>();
