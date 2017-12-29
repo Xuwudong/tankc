@@ -91,9 +91,10 @@ public class MapHandler {
 			}else {
 				info = "AI击中了对手,对手只剩下:" + res.getRemainHp() + "血了";
 			}
+			GameData.getInstance().setYouBlood(res.getRemainHp());
 		}else {
 			info = "您被击中了，只剩下:" + res.getRemainHp() + "血了!			";
-			
+			GameData.getInstance().setMeBlood(res.getRemainHp());
 			
 			/** 构造一个移动100ms后提交移动更新UI来更新ui，智障。。。**/
 			HandleContext.getInstance().addCommand(0, new Task(200, false, 0, TimeUnit.MILLISECONDS, new Runnable() {
@@ -127,7 +128,7 @@ public class MapHandler {
 		}else {
 			info = "你已经gg了								";
 		}
-		GameData.getInstance().updateInfo(info);
+		GameData.getInstance().updateTitle(info);
 	}
 	
 	@MessageInvoke(cmd = CmdConstant.RES_AI_DIE)
@@ -141,6 +142,7 @@ public class MapHandler {
 		}else {
 			info = "你" + res.getInfo();
 		}
+		GameData.getInstance().setBlood("");
 		GameData.getInstance().updateInfo(info);
 	}	
 	
@@ -151,8 +153,10 @@ public class MapHandler {
 		String info = null;
 		if(myself == res.getSessionId()) {		//自己射中了ai
 			info = "你射中了Ai，血量变成:" + res.getBlood() + "但是ai的仇恨对象变成你";
+			GameData.getInstance().setMeBlood(res.getBlood());
 		}else {
 			info = "对手射中了ai，血量+1,变为:" + res.getBlood();
+			GameData.getInstance().setYouBlood((res.getBlood()));
 		}
 		logger.debug(info);
 		GameData.getInstance().updateInfo(info);

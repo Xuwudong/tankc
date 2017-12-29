@@ -28,6 +28,10 @@ public class GameData {
 	private volatile byte direction;
 	private volatile boolean isFire;
 	private volatile boolean isInGame;
+	private String info = "信息";
+	private String blood = "我";
+	private int bloodMe;
+	private int bloodYou;
 	
 
 	/**
@@ -226,6 +230,9 @@ public class GameData {
 		this.mapGrids = mapGrids;
 		//优化地图
 		MapHelper.optimizeDisplay(mapGrids);
+		
+		bloodMe = 10; bloodYou = 10;
+		this.blood = "我的血量：" + bloodMe + "\n对手血量：" + bloodYou;
 	}
 	
 	/**
@@ -320,7 +327,30 @@ public class GameData {
 		this.isInGame = isInGame;
 	}	
 	
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public String getBlood() {
+		return blood;
+	}
+
+	public void setBlood(String blood) {
+		this.blood = blood;
+	}
 	
+	public void setMeBlood(int blood) {
+		this.blood = "我的血量：" + blood + "\n对手血量：" + bloodYou;
+		bloodMe = blood;
+	}
 	
+	public void setYouBlood(int blood) {
+		this.blood = "我的血量：" + bloodMe + "\n对手血量：" + blood;
+		bloodYou = blood;
+	}
 	
 }

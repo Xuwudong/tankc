@@ -31,6 +31,9 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case ActionCommand.START_TWO_PEOPLE:
+				if(GameData.getInstance().isInGame()) {
+					return;
+				}
 				ClientSession.getInstance().pushMessage(new ReqMatchMessage());
 				logger.error("匹配比赛:{}" + ClientSession.getInstance().getSessionId());
 				break;			
@@ -75,6 +78,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		GameData.getInstance().updateTitle(GameData.getInstance().getInfo());
 		DrawUtil.drawMap(g, this, GameData.getInstance().getMap());
 	}
 

@@ -3,7 +3,6 @@ package com.senninha.tankc.ui;
 import java.awt.Color;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -33,7 +32,6 @@ public class GameFrame extends JFrame {
 	/** 开始二人游戏 **/
 	private JMenuItem twoPeopleMenuItem;
 	
-	private JLabel label;
 
 	/**
 	 * 构造函数，初始化相关信息
@@ -46,7 +44,6 @@ public class GameFrame extends JFrame {
 		twoPeopleMenuItem = new JMenuItem("开始二人游戏");
 		twoPeopleMenuItem.setActionCommand(ActionCommand.START_TWO_PEOPLE);
 		
-		label = new JLabel("");				//显示战况的
 
 		
 		/** 监听 **/
@@ -58,7 +55,6 @@ public class GameFrame extends JFrame {
 
 		// 将panel添加到Frame
 		this.add(tankGamePanel);
-		tankGamePanel.add(label);
 		
 		/** 添加菜单类 **/
 		this.setJMenuBar(menuBar);
@@ -82,8 +78,19 @@ public class GameFrame extends JFrame {
 	 * @param text
 	 */
 	public void printInfo(String text) {
-		label.setText(text);
-		label.setForeground(Color.RED);
+		GameData.getInstance().setInfo(text);
 	}
+	
+	/**
+	 * 打印血量
+	 * @param text
+	 */
+	public void printBlood(String text) {
+		GameData.getInstance().setBlood(text);
+	}
+
+
+	
+	
 
 }

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import com.senninha.tankc.map.Grid;
 import com.senninha.tankc.map.GridStatus;
 import com.senninha.tankc.map.MapHelper;
+import com.senninha.tankc.ui.GameData;
 
 /**
  * 画出游戏界面
@@ -57,6 +58,7 @@ public class DrawUtil {
 			}
 		}
 		drawRect(graphics, jpanel, list);
+		printText(graphics, jpanel);
 	}
 	
 	private static void drawRect(Graphics graphics, JPanel jpanel, List<Grid> list) {
@@ -71,5 +73,10 @@ public class DrawUtil {
 			list.add(new Grid((byte) (i % WIDTH_GRIDS), (byte) (i / WIDTH_GRIDS), (byte) (r.nextInt(3))));
 		}
 		return list;
+	}
+	
+	private static void printText(Graphics graphics, JPanel jPanel) {
+		graphics.drawString(GameData.getInstance().getInfo(), MapHelper.PER_GRID_PIXEL * 1, MapHelper.PER_GRID_PIXEL * MapHelper.HEIGHT_GRIDS + 20);
+		graphics.drawString(GameData.getInstance().getBlood(), MapHelper.PER_GRID_PIXEL * 1, MapHelper.PER_GRID_PIXEL * MapHelper.HEIGHT_GRIDS + 40);
 	}
 }
